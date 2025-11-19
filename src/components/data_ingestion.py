@@ -48,7 +48,7 @@ class DataIngestion:
         for item_folder in self.raw_data_dir.iterdir():
             if not item_folder.is_dir():
                 continue
-            label = item_folder.name.strip().capitalize()  
+            label = item_folder.name
             if label in image_paths:
                 for ext in image_extensions:
                     image_paths[label].extend(item_folder.glob(ext))
@@ -143,7 +143,7 @@ class DataIngestion:
             'dataset_info': {
                 'name': 'Plant Disease Dataset',
                 'classes': self.config.CLASS_NAMES,
-                'task_type': 'binary_classification',
+                'task_type': 'multi_class_classification',
                 'ingestion_date': datetime.now().isoformat()
             },
             'class_distribution': {},
@@ -201,8 +201,7 @@ class DataIngestion:
             self.logger.info("=" * 60)
             self.logger.info("DATA INGESTION COMPLETED SUCCESSFULLY")
             self.logger.info(f"Total images ingested: {metadata['total_images']}")
-            self.logger.info(f"Fresh images: {metadata['class_distribution'].get('Fresh', 0)}")
-            self.logger.info(f"Rotten images: {metadata['class_distribution'].get('Rotten', 0)}")
+            self.logger.info(f"Number of classes: {len(self.config.CLASS_NAMES)}")
             self.logger.info("=" * 60)
 
             return ingestion_results
